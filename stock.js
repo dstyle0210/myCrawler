@@ -84,8 +84,6 @@ Date.prototype.yyyymmdd = function() {
         await set(dbRef, stockData);
     };
     goOffline(db);
-
-    fs.writeFileSync("./local/stocksData.js","var data="+JSON.stringify(rimResult),"utf8");
     
     
     // 텔레그램봇 시작
