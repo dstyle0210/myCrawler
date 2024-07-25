@@ -7,7 +7,7 @@ const { getDatabase , set , ref ,onValue, goOffline } = require('firebase/databa
 var rimResult = [];
 var spread = 0;
 var bondSpread3Y = 0;
-var browser,page;
+let page;
 Date.prototype.yyyymmdd = function() {
     let set = (num) => (num<10) ? "0"+num : ""+num;
     return `${this.getFullYear()}-${set(this.getMonth()+1)}-${set(this.getDate())} ${this.getHours()}:${this.getMinutes()}`;

@@ -4,7 +4,7 @@
     "description": "크롤러 nodejs , playwright, telegram , firebase",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        
     },
     "keywords": [],
     "author": "dstyle0210",
