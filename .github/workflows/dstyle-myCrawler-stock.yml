@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.15]
+        node-version: [20]
     steps:
     - uses: actions/checkout@v3
 
@@ -25,6 +25,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Build
+      env:
+        TG_TOKEN_MABONGPAPA : ${{secrets.TG_TOKEN_MABONGPAPA}}
+        TG_CHATID_MABONGPAPA : ${{secrets.TG_CHATID_MABONGPAPA}}
       run: |
         npm install
-        node stock
+        npm run stock
