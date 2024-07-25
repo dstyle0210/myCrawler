@@ -1,0 +1,17 @@
+{
+    "name": "dstyle-mycrawler",
+    "version": "1.0.0",
+    "description": "크롤러 nodejs , playwright, telegram , firebase",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "dstyle0210",
+    "license": "ISC",
+    "devDependencies": {
+        "firebase": "^10.12.4",
+        "node-telegram-bot-api": "^0.66.0",
+        "playwright":"^1.36.0"
+    }
+}
