@@ -29,4 +29,4 @@ jobs:
         TG_CHATID_MABONGPAPA : ${{secrets.TG_CHATID_MABONGPAPA}}
       run: |
         npm install
-        npm run news
+        npm run ts-news

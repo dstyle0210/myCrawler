@@ -3,10 +3,10 @@ name: dstyle-myCrawler-sneaker
 on:
   schedule:
     - cron : '0 23 * * *'
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  #push:
+  #  branches: [ "main" ]
+  #pull_request:
+  #  branches: [ "main" ]
 
 jobs:
   build:

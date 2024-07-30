@@ -7,12 +7,14 @@
         "stock": "node stock",
         "sneaker": "node sneaker",
         "news": "node news",
-        "ts-sneaker": "ts-node ./crawler/sneaker.ts"
+        "ts-sneaker": "ts-node ./crawler/sneaker.ts",
+        "ts-news": "ts-node ./crawler/news.ts"
     },
     "keywords": [],
     "author": "dstyle0210",
     "license": "ISC",
     "devDependencies": {
+        "@types/jquery": "^3.5.30",
         "@types/node-telegram-bot-api": "^0.64.7",
         "dotenv": "^16.4.5",
         "firebase": "^10.12.4",
