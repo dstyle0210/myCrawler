@@ -3,10 +3,10 @@ name: dstyle-myCrawler-sneaker
 on:
   schedule:
     - cron : '0 23 * * *'
-  #push:
-  #  branches: [ "main" ]
-  #pull_request:
-  #  branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -29,4 +29,4 @@ jobs:
         TG_CHATID_MABONGPAPA : ${{secrets.TG_CHATID_MABONGPAPA}}
       run: |
         npm install
-        npm run sneaker
+        npm run ts-sneaker
