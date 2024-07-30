@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "stock": "node stock",
-        "all": "npm i && npm run stock"
+        "sneaker": "node sneaker"
     },
     "keywords": [],
     "author": "dstyle0210",

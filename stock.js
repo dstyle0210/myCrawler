@@ -3,9 +3,7 @@ const {chromium,devices} = require("playwright");
 const TelegramBot = require('node-telegram-bot-api');
 const {initializeApp} = require('firebase/app');
 const { getDatabase , set , ref ,onValue, goOffline } = require('firebase/database');
-
-// ENV
-const {TG_TOKEN_MABONGPAPA,TG_CHATID_MABONGPAPA,FIREBASE_DB} = process.env;
+const {TG_TOKEN_MABONGPAPA,TG_CHATID_MABONGPAPA,FIREBASE_DB} = process.env; // ENV
 
 // START
 var rimResult = [];

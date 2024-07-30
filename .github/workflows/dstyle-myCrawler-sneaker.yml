@@ -1,13 +1,12 @@
-name: dstyle-myCrawler-stock
+name: dstyle-myCrawler-sneaker
 
 on:
   schedule:
-    - cron : '0 23 * * 0-4'
-    - cron : '30 6 * * 1-5'
-  #push:
-  #  branches: [ "main" ]
-  #pull_request:
-  #  branches: [ "main" ]
+    - cron : '0 23 * * *'
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -28,7 +27,6 @@ jobs:
       env:
         TG_TOKEN_MABONGPAPA : ${{secrets.TG_TOKEN_MABONGPAPA}}
         TG_CHATID_MABONGPAPA : ${{secrets.TG_CHATID_MABONGPAPA}}
-        FIREBASE_DB : ${{secrets.FIREBASE_DB}}
       run: |
         npm install
-        npm run stock
+        npm run sneaker
