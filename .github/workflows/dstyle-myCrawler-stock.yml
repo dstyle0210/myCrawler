@@ -28,6 +28,7 @@ jobs:
       env:
         TG_TOKEN_MABONGPAPA : ${{secrets.TG_TOKEN_MABONGPAPA}}
         TG_CHATID_MABONGPAPA : ${{secrets.TG_CHATID_MABONGPAPA}}
+        FIREBASE_DB : ${{secrets.FIREBASE_DB}}
       run: |
         npm install
         npm run stock

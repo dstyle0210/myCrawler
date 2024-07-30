@@ -4,6 +4,10 @@ const TelegramBot = require('node-telegram-bot-api');
 const {initializeApp} = require('firebase/app');
 const { getDatabase , set , ref ,onValue, goOffline } = require('firebase/database');
 
+// ENV
+const {TG_TOKEN_MABONGPAPA,TG_CHATID_MABONGPAPA,FIREBASE_DB} = process.env;
+
+// START
 var rimResult = [];
 var spread = 0;
 var bondSpread3Y = 0;
@@ -18,13 +22,6 @@ Date.prototype.yyyymmdd = function() {
     // Read Code List
     const codeListRaw = fs.readFileSync("./stocksCodeList.txt");
     const codeList = codeListRaw.toString().split("\n").map((code)=>code.replace("\r","")).filter(code => code);
-
-    // Firebase connect
-    const firebaseConfig = {
-        databaseURL: "https://dstyle-stocks-default-rtdb.firebaseio.com",
-    };
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
 
     // playwright browser open
     const browser = await chromium.launch({headless:true});
@@ -49,6 +46,10 @@ Date.prototype.yyyymmdd = function() {
         return result;
     });
 
+
+    // Firebase connect
+    const app = initializeApp({databaseURL: FIREBASE_DB});
+    const db = getDatabase(app);
     const indexRef = ref(db, `dailyIndex`);
     await set(indexRef,null);
     await set(indexRef,index);
@@ -71,8 +72,6 @@ Date.prototype.yyyymmdd = function() {
     await set(rateRef,spreads);
     console.log(spreads);
 
-
-
     var count = 1;
     spread = spreads.spread;
     bondSpread3Y = spreads.bondSpread3Y;
@@ -87,9 +86,9 @@ Date.prototype.yyyymmdd = function() {
     
     
     // 텔레그램봇 시작
-    const bot = new TelegramBot(process.env.TG_TOKEN_MABONGPAPA, {polling: false});
-    bot.sendMessage(process.env.TG_CHATID_MABONGPAPA, `[STOCK] 파일생성 완료\nhttps://dstyle-stocks.web.app`);
-
+    const bot = new TelegramBot(TG_TOKEN_MABONGPAPA, {polling: false});
+    bot.sendMessage(TG_CHATID_MABONGPAPA, `[STOCK] 파일생성 완료\nhttps://dstyle-stocks.web.app`);
+    // console.log(`[STOCK] 파일생성 완료\nhttps://dstyle-stocks.web.app`)
     await browser.close();
 })();
 
