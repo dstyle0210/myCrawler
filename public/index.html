@@ -33,7 +33,7 @@
     <header>
         <p>기대수익률(BBB+,5Y) :<strong>{{rate.spreadText}}%</strong></p>
         <p>국고채 3년 :<strong>{{rate.bond3yText}}%</strong></p>
-        <p>기준금리:<strong>3.50%</strong></p>
+        <p>기준금리:<strong>3.00%</strong></p>
         <p><a href="/document.html">[용어설명]</a></p>
     </header>
     <header>
@@ -48,9 +48,9 @@
                     <th>종목명</th>
                     <th>ROE</th>
                     <th>배당률</th>
-                    <th>안전마진</th>
                     <th>RIM</th>
-                    <th>외인(6일,전일)</th>
+                    <th>전일주가</th>
+                    <th>적정주가</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,9 +58,9 @@
                     <td><a :href="'https://m.stock.naver.com/domestic/stock/'+stock.code+'/news/title'" target="_blank">{{stock.name}}</a></td>
                     <td :class="stock.roeClassName">{{stock.roePer}}%</td>
                     <td :class="stock.dividendClassName">{{stock.dividendPer}}%</td>
-                    <td :class="stock.safetyMarginClassName">{{stock.safetyMargin}}%</td>
                     <td :class="stock.rimClassName">{{stock.rimPer}}%</td>
-                    <td :class="stock.foreignerClassName">{{stock.foreigner.toLocaleString()}} (<i :class="stock.foreignerYClassName">{{stock.foreignerY.toLocaleString()}}</i>)</td>
+                    <td :class="stock.safetyMarginClassName">{{stock.price.toLocaleString()}}</td>
+                    <td :class="stock.safetyMarginClassName">{{stock.rightPrice.toLocaleString()}}</td>
                 </tr>
             </tbody>
         </table>
