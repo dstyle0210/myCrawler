@@ -13,23 +13,35 @@ const {TG_TOKEN_MABONGPAPA,TG_CHATID_MABONGPAPA} = process.env; // ENV
 
     await page.goto("https://www.nike.com/kr/launch?s=upcoming");
     const nikeLaunchList = await page.evaluate(() => {
-        var prdList = document.querySelectorAll(".product-card");
+        var prdList = document.querySelectorAll(".product-card-link");
         if(!prdList.length) return [{name:"발매일정을 못가져왔습니다.",link:""}];
+        
         const todayLaunchList:{name:String,link:String}[] = [];
+        const nowDate = new Date();nowDate.setHours(nowDate.getHours() + 9); // github action UTC+0
+        const today = (nowDate.getMonth()+1)+"-"+nowDate.getDate();
+
         prdList.forEach((productCard) => {
-            const nowDate = new Date();nowDate.setHours(nowDate.getHours() + 9); // github action UTC+0
-            const today = (nowDate.getMonth()+1)+"-"+nowDate.getDate();
-            const caption = productCard.querySelector(".launch-caption") as HTMLElement;
+            const caption = productCard.querySelector("[class^=css-]") as HTMLElement;
+            const dday = caption.innerText.replace(/\s+/gi,"").replace("월","-").replace("일","");
+            if(today != dday) return;
+            const name = (productCard.querySelector(".details-text .category") as HTMLElement).innerText;
+            const href = (productCard as HTMLAnchorElement).href;
+            todayLaunchList.push({name,link:href});
+        });
+        /*
+        prdList.forEach((productCard) => {
+            const caption = productCard.querySelector("[class^=css-]") as HTMLElement;
             let dday:string;
             if(caption){
                 dday = caption.innerText.replace(/\s+/gi,"").replace("월","-").replace("일","");
                 if(today == dday){
-                    const name = (productCard.querySelector(".copy-container") as HTMLElement)?.innerText;
+                    const name = (productCard.querySelector(".details-text .category") as HTMLElement)?.innerText;
                     const link = (productCard.querySelector(".card-link") as HTMLAnchorElement)?.href;
                     todayLaunchList.push({name,link});
                 }
             };
         });
+        */
         if(!todayLaunchList.length) return [{name:"오늘 발매없음",link:""}];
         return todayLaunchList;
     });
