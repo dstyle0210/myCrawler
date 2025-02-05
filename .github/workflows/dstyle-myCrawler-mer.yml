@@ -1,0 +1,32 @@
+name: dstyle-myCrawler-mer
+
+on:
+  schedule:
+    - cron : '0 23 * * 0-4'
+  #push:
+    #branches: [ "main" ]
+  #pull_request:
+    #branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20]
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Build
+      env:
+        TG_TOKEN_MABONGPAPA : ${{secrets.TG_TOKEN_MABONGPAPA}}
+        TG_CHATID_MABONGPAPA : ${{secrets.TG_CHATID_MABONGPAPA}}
+      run: |
+        npm install
+        npm run ts-mer

@@ -8,7 +8,9 @@
         "sneaker": "node sneaker",
         "news": "node news",
         "ts-sneaker": "ts-node ./crawler/sneaker.ts",
-        "ts-news": "ts-node ./crawler/news.ts"
+        "ts-news": "ts-node ./crawler/news.ts",
+        "ts-mer": "ts-node ./crawler/mer.ts",
+        "dev": "ts-node ./crawler/mer_dev.ts"
     },
     "keywords": [],
     "author": "dstyle0210",
