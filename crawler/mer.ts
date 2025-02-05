@@ -10,8 +10,8 @@ const {TG_TOKEN_MABONGPAPA,TG_CHATID_MABONGPAPA} = process.env; // ENV
     const setMM = (mm:number) => ((mm<10) ? "0"+mm : ""+mm);
     const convertDate = (date:string) => "20"+date.replace(/[^0-9]/g,"");
     const nowDate = new Date();nowDate.setHours(nowDate.getHours() + 9); // github action UTC+0
-    // const today = nowDate.getFullYear() + setMM(nowDate.getMonth()+1) + setMM(nowDate.getDate());
-    const today = "20250203";
+    const today = nowDate.getFullYear() + setMM(nowDate.getMonth()+1) + setMM(nowDate.getDate());
+    // const today = "20250203";
 
 
     // 추가 목록
@@ -35,6 +35,6 @@ const {TG_TOKEN_MABONGPAPA,TG_CHATID_MABONGPAPA} = process.env; // ENV
     // 텔레그램 발송
     if(!TG_TOKEN_MABONGPAPA || !TG_CHATID_MABONGPAPA){ return; };
     const bot = new TelegramBot(TG_TOKEN_MABONGPAPA, {polling: false});
-    const message = "[MER]\n추가:"+isAdd+"\n삭제:"+isExit;
+    const message = "[MER]\n추가:"+(!!isAdd)+"\n삭제:"+(!!isExit);
     bot.sendMessage(TG_CHATID_MABONGPAPA, message);
 })();
