@@ -25,6 +25,8 @@ jobs:
 
     - name: Build
       env:
+        NAVER_CLIENT_ID : ${{secrets.NAVER_CLIENT_ID}}
+        NAVER_CLIENT_SECRET : ${{secrets.NAVER_CLIENT_SECRET}}
         TG_TOKEN_MABONGPAPA : ${{secrets.TG_TOKEN_MABONGPAPA}}
         TG_CHATID_MABONGPAPA : ${{secrets.TG_CHATID_MABONGPAPA}}
       run: |
