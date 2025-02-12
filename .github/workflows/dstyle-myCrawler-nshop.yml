@@ -1,12 +1,12 @@
-name: dstyle-myCrawler-mer
+name: dstyle-myCrawler-nshop
 
 on:
   schedule:
-    - cron : '0 23 * * 0-4'
-  #push:
-    #branches: [ "main" ]
-  #pull_request:
-    #branches: [ "main" ]
+    - cron : '0 3 * * *'
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -25,8 +25,8 @@ jobs:
 
     - name: Build
       env:
-        TG_TOKEN_DSTYLESTOCK : ${{secrets.TG_TOKEN_DSTYLESTOCK}}
-        TG_CHATID_DSTYLESTOCK : ${{secrets.TG_CHATID_DSTYLESTOCK}}
+        TG_TOKEN_MABONGPAPA : ${{secrets.TG_TOKEN_MABONGPAPA}}
+        TG_CHATID_MABONGPAPA : ${{secrets.TG_CHATID_MABONGPAPA}}
       run: |
         npm install
-        npm run ts-mer
+        npm run ts-nshop
