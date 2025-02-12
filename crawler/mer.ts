@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import request from 'request';
+import TelegramBot from "node-telegram-bot-api";
 const {TG_TOKEN_DSTYLESTOCK,TG_CHATID_DSTYLESTOCK} = process.env; // ENV
 if (!TG_TOKEN_DSTYLESTOCK || !TG_CHATID_DSTYLESTOCK) {
     dotenv.config();
@@ -29,9 +30,10 @@ request.get({
     } else {
         // console.log('error = ' + response.statusCode);
         text = "에러" + response.statusCode;
-        
     };
-    const post = `https://api.telegram.org/bot${TG_TOKEN_DSTYLESTOCK}/sendmessage?chat_id=${TG_CHATID_DSTYLESTOCK}&text=[메르] ${text}`;
-    // console.log(text);
-    request.get(post);
+
+    if(!TG_TOKEN_DSTYLESTOCK || !TG_CHATID_DSTYLESTOCK){ return; };
+    const bot = new TelegramBot(TG_TOKEN_DSTYLESTOCK, {polling: false});
+    const message = "[메르] "+text;
+    bot.sendMessage(TG_CHATID_DSTYLESTOCK, message);
 });
