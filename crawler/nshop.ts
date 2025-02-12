@@ -7,20 +7,19 @@ const {TG_TOKEN_MABONGPAPA,TG_CHATID_MABONGPAPA} = process.env; // ENV
 if (!NAVER_CLIENT_ID || !NAVER_CLIENT_SECRET) {
     dotenv.config();
 };
-
 const bot = new TelegramBot(TG_TOKEN_MABONGPAPA, {polling: false});
 const items = ['OUW23234', 'DXPD33041'];
 items.forEach(item => {
     request.get({
         url: `https://openapi.naver.com/v1/search/shop.json?sort=asc&query=${encodeURI(item)}`,
-        headers: { 'X-Naver-Client-Id': NAVER_CLIENT_ID, 'X-Naver-Client-Secret': NAVER_CLIENT_SECRET }
+        headers: { 'X-Naver-Client-Id': process.env.NAVER_CLIENT_ID, 'X-Naver-Client-Secret': process.env.NAVER_CLIENT_SECRET }
     }, function (error, response, body) {
         let message = "";
         if (!error && response.statusCode == 200) {
             const data = JSON.parse(body);
             const { title, lprice, link } = data.items[0];
             // console.log(title+" "+lprice + "원");
-            message = "[nShop] "+title+" "+lprice + "원";
+            message = "[nShop]\n"+title.replace(/<[^>]*>?/g, '')+"\n"+lprice + "원";
         } else {
             // console.log('error = ' + response.statusCode);
             message = "[nShop] "+'error = ' + response.statusCode;
