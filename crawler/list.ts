@@ -10,6 +10,11 @@ const {FIREBASE_URL,LIST_URL,FIREBASE_DB} = process.env; // ENV
     const db = getDatabase(app);
     const nowRef = ref(db, `nowList`);
     const prevRef = ref(db, `prevList`);
+    
+    await set(nowRef,null);
+    await set(nowRef,{ff:FIREBASE_DB});
+/*
+    
 
     console.log("step1");
     await get(nowRef).then(async (snapshot) => {
@@ -33,7 +38,7 @@ const {FIREBASE_URL,LIST_URL,FIREBASE_DB} = process.env; // ENV
         console.log("step4");
         set(nowRef,data.stockTable);
     });
-
+*/
     setTimeout(()=>{
         console.log("step5");
         goOffline(db);
