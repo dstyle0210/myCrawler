@@ -11,19 +11,7 @@ console.log(LIST_URL);
 const firebaseConfig = {
     databaseURL: FIREBASE_URL,
 };
-const getStockTable = () => {
-    return new Promise((res,rej)=>{
-        request.get({
-            url: LIST_URL
-        }, function (error, response, body) {
-            const data = JSON.parse(body);
-            res(data.stockTable);
-        });
-    });
-};
-
 (async () => {
-    const refData = await getStockTable();
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     const nowRef = ref(db, `nowList`);
@@ -41,7 +29,15 @@ const getStockTable = () => {
     });
 
     await set(nowRef,null);
-    await set(nowRef,refData);
 
-    goOffline(db);
+    request.get({
+        url: LIST_URL
+    }, function (error, response, body) {
+        const data = JSON.parse(body);
+        set(nowRef,data.stockTable);
+    });
+
+    setTimeout(()=>{
+        goOffline(db);
+    },5000);
 })();
