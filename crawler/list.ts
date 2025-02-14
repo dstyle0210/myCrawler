@@ -17,16 +17,21 @@ const firebaseConfig = {
     const nowRef = ref(db, `nowList`);
     const prevRef = ref(db, `prevList`);
 
+
+    
+
     console.log("step1");
     await get(nowRef).then(async (snapshot) => {
         if (snapshot.exists()) {
-            await set(prevRef,snapshot.val());
+            return await set(prevRef,snapshot.val());
             console.log(snapshot.val().length);
         } else {
             console.log("No data available");
+            return "No data available";
         }
     }).catch((error) => {
         console.error(error);
+        return error;
     });
     console.log("step2");
     await set(nowRef,null);
