@@ -32,5 +32,4 @@ jobs:
         LIST_URL : ${{secrets.LIST_URL}}
       run: |
         npm install
-        npm run ts-mer
         npm run ts-list

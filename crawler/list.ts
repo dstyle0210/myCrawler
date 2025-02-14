@@ -5,6 +5,9 @@ import { getDatabase, set, get, ref, goOffline } from "firebase/database";
 
 dotenv.config();
 const {FIREBASE_URL,LIST_URL} = process.env; // ENV
+console.log(FIREBASE_URL);
+console.log(LIST_URL);
+
 const firebaseConfig = {
     databaseURL: FIREBASE_URL,
 };
