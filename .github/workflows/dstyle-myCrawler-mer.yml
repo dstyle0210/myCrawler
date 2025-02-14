@@ -33,4 +33,5 @@ jobs:
         FIREBASE_DB : ${{secrets.FIREBASE_DB}}
       run: |
         npm install
+        npm run ts-mer
         npm run ts-list
