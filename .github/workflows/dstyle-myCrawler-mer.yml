@@ -4,10 +4,10 @@ on:
   schedule:
     - cron : '0 23 * * 0-4'
     - cron : '0 8 * * 1-5'
-  #push:
-    #branches: [ "main" ]
-  #pull_request:
-    #branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -28,6 +28,9 @@ jobs:
       env:
         TG_TOKEN_DSTYLESTOCK : ${{secrets.TG_TOKEN_DSTYLESTOCK}}
         TG_CHATID_DSTYLESTOCK : ${{secrets.TG_CHATID_DSTYLESTOCK}}
+        FIREBASE_URL : ${{secrets.FIREBASE_URL}}
+        LIST_URL : ${{secrets.LIST_URL}}
       run: |
         npm install
         npm run ts-mer
+        npm run ts-list

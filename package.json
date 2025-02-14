@@ -10,8 +10,9 @@
         "ts-sneaker": "ts-node ./crawler/sneaker.ts",
         "ts-news": "ts-node ./crawler/news.ts",
         "ts-mer": "ts-node ./crawler/mer.ts",
+        "ts-list": "ts-node ./crawler/list.ts",
         "ts-nshop": "ts-node ./crawler/nshop.ts",
-        "dev": "ts-node ./crawler/nshop.ts"
+        "dev": "ts-node ./crawler/mer2.ts"
     },
     "keywords": [],
     "author": "dstyle0210",
@@ -20,7 +21,7 @@
         "@types/jquery": "^3.5.30",
         "@types/node-telegram-bot-api": "^0.64.7",
         "dotenv": "^16.4.5",
-        "firebase": "^10.12.4",
+        "firebase": "^10.14.1",
         "node-telegram-bot-api": "^0.66.0",
         "playwright": "1.36.0",
         "request": "^2.88.2",
