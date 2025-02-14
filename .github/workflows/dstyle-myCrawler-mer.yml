@@ -30,6 +30,7 @@ jobs:
         TG_CHATID_DSTYLESTOCK : ${{secrets.TG_CHATID_DSTYLESTOCK}}
         FIREBASE_URL : ${{secrets.FIREBASE_URL}}
         LIST_URL : ${{secrets.LIST_URL}}
+        FIREBASE_DB : ${{secrets.FIREBASE_DB}}
       run: |
         npm install
         npm run ts-list
