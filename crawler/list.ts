@@ -16,29 +16,7 @@ const firebaseConfig = {
     const db = getDatabase(app);
     const nowRef = ref(db, `nowList`);
     const prevRef = ref(db, `prevList`);
-
-
-    
-
-    console.log("step1");
-    await get(nowRef).then(async (snapshot) => {
-        console.log(snapshot);
-        if (snapshot.exists()) {
-            console.log("여기용");
-            await set(prevRef,snapshot.val());
-            console.log("저기용");
-            console.log(snapshot.val().length);
-            console.log("저기용");
-        } else {
-            console.log("No data available");
-            return "No data available";
-        }
-    }).catch((error) => {
-        console.error(error);
-        return error;
-    });
-
-    console.log("step2");
+    console.log("v1");
     await set(nowRef,null);
 
     console.log("step3");
