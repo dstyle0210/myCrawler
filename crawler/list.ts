@@ -22,9 +22,13 @@ const firebaseConfig = {
 
     console.log("step1");
     await get(nowRef).then(async (snapshot) => {
+        console.log(snapshot);
         if (snapshot.exists()) {
-            return await set(prevRef,snapshot.val());
+            console.log("여기용");
+            await set(prevRef,snapshot.val());
+            console.log("저기용");
             console.log(snapshot.val().length);
+            console.log("저기용");
         } else {
             console.log("No data available");
             return "No data available";
@@ -33,6 +37,7 @@ const firebaseConfig = {
         console.error(error);
         return error;
     });
+
     console.log("step2");
     await set(nowRef,null);
 
