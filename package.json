@@ -9,10 +9,9 @@
         "news": "node news",
         "ts-sneaker": "ts-node ./crawler/sneaker.ts",
         "ts-news": "ts-node ./crawler/news.ts",
-        "ts-mer": "ts-node ./crawler/mer.ts",
         "ts-list": "ts-node ./crawler/list.ts",
         "ts-nshop": "ts-node ./crawler/nshop.ts",
-        "dev": "ts-node ./crawler/mer2.ts"
+        "dev": "ts-node ./crawler/"
     },
     "keywords": [],
     "author": "dstyle0210",
