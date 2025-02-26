@@ -2,8 +2,8 @@ name: dstyle-myCrawler-mer
 
 on:
   schedule:
-    - cron : '0 1 * * 1-5' 
-    - cron : '30 7 * * 1-5'
+    - cron : '0 0 * * 1-5' 
+    - cron : '30 4 * * 1-5'
   push:
     branches: [ "main" ]
   pull_request:

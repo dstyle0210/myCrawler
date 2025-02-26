@@ -19,11 +19,7 @@ const {LIST_URL,FIREBASE_DB,TG_TOKEN_DSTYLESTOCK,TG_CHATID_DSTYLESTOCK} = proces
             // console.log(snapshot.val().length);
             snapshot.val().forEach((item) => {
                 const {stockCode,corpName,curVol} = item;
-                dbList[stockCode] = {
-                    stockCode,
-                    corpName,
-                    prevVol:curVol
-                };
+                dbList[stockCode] = {stockCode,corpName,prevVol:curVol};
             });
         } else {
             console.log("No data available");
@@ -44,12 +40,7 @@ const {LIST_URL,FIREBASE_DB,TG_TOKEN_DSTYLESTOCK,TG_CHATID_DSTYLESTOCK} = proces
             if(dbList[stockCode]){
                 dbList[stockCode].curVol = curVol;
             }else{
-                dbList[stockCode] = {
-                    stockCode,
-                    corpName,
-                    curVol,
-                    prevVol:0
-                };
+                dbList[stockCode] = {stockCode,corpName,curVol,prevVol:0};
             };
         });
 
