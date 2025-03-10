@@ -37,34 +37,39 @@
     <header>
         <p>기대수익률(BBB+,5Y) :<strong>{{rate.spreadText}}%</strong></p>
         <p>국고채 3년 :<strong>{{rate.bond3yText}}%</strong></p>
-        <p>기준금리:<strong>3.00%</strong></p>
+        <p>기준금리:<strong>2.75%</strong></p>
     </header>
     <header>
         <p>USD :<strong>{{index.usd}}원</strong> <i :class="index.usdClassName">({{index.usdPer}}%)</i></p>
         <p>WTI :<strong>${{index.wti}}</strong> <i :class="index.wtiClassName">({{index.wtiPer}}%)</i></p>
         <p>GOLD :<strong>${{index.gold}}</strong> <i :class="index.goldClassName">({{index.goldPer}}%)</i></p>
+        <p>KOR :<strong>${{index.kor}}</strong></p>
     </header>
     <section>
         <table class="table">
             <thead>
                 <tr>
-                    <th>종목명</th>
+                    <th rowspan="2" style="width:40%;vertical-align:middle;">종목명</th>
+                    <th>주가</th>
+                    <th>배당</th>
+                </tr>
+                <tr>
                     <th>ROE</th>
-                    <th>배당률</th>
                     <th>RIM</th>
-                    <th>전일주가</th>
-                    <th>적정주가</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="stock,idx in stocks">
-                    <td><a :href="'https://m.stock.naver.com/domestic/stock/'+stock.code+'/news/title'" target="_blank">{{stock.name}}</a></td>
-                    <td :class="stock.roeClassName">{{stock.roePer}}%</td>
-                    <td :class="stock.dividendClassName">{{stock.dividendPer}}%</td>
-                    <td :class="stock.rimClassName">{{stock.rimPer}}%</td>
-                    <td :class="stock.safetyMarginClassName">{{stock.price.toLocaleString()}}</td>
-                    <td :class="stock.safetyMarginClassName">{{stock.rightPrice.toLocaleString()}}</td>
-                </tr>
+                <template v-for="stock,idx in stocks">
+                    <tr v-for="stock,idx in stocks">
+                        <td rowspan="2"><a :href="'https://m.stock.naver.com/domestic/stock/'+stock.code+'/news/title'" target="_blank">{{stock.name}}</a></td>
+                        <td :class="stock.safetyMarginClassName">{{stock.price.toLocaleString()}}</td>
+                        <td :class="stock.dividendClassName">{{stock.dividendPer}}%</td>
+                    </tr>
+                    <tr>
+                        <td :class="stock.roeClassName">{{stock.roePer}}%</td>
+                        <td :class="stock.rimClassName">{{stock.rimPer}}%</td>
+                    </tr>
+                </template>
             </tbody>
         </table>
     </section>

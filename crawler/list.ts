@@ -57,7 +57,7 @@ const {LIST_URL,FIREBASE_DB,TG_TOKEN_DSTYLESTOCK,TG_CHATID_DSTYLESTOCK} = proces
         const text = result == "" ? "변경없음" : result;
         if(!TG_TOKEN_DSTYLESTOCK || !TG_CHATID_DSTYLESTOCK){ return; };
         const bot = new TelegramBot(TG_TOKEN_DSTYLESTOCK, {polling: false});
-        const message = text;
+        const message = text+"\nhttps://dstyle-stocks.web.app/goat.html";
         bot.sendMessage(TG_CHATID_DSTYLESTOCK, message);
     });
 
