@@ -11,6 +11,7 @@
         "ts-news": "ts-node ./crawler/news.ts",
         "ts-list": "ts-node ./crawler/list.ts",
         "ts-nshop": "ts-node ./crawler/nshop.ts",
+        "ts-stock": "ts-node ./crawler/stock.ts",
         "dev": "ts-node ./crawler/"
     },
     "keywords": [],

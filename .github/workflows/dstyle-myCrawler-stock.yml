@@ -31,4 +31,4 @@ jobs:
         FIREBASE_DB : ${{secrets.FIREBASE_DB}}
       run: |
         npm install
-        npm run stock
+        npm run ts-stock
