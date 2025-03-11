@@ -19,48 +19,60 @@
         .-red{color:red!important;}
 
         .stocks{display:flex;}
-        header{display:flex;justify-content:flex-end;background:#f5f5f5;border-bottom:1px solid #ccc;}
-        header p{margin-bottom:0;margin:0 5px;}
+        header{display:flex;justify-content:space-around;background:#f5f5f5;border-bottom:1px solid #ccc;}
+        header p{margin:0 5px;}
+
         footer p{float:right;}
         .table{margin-bottom:0;}
         .table th{text-align:center;}
         .table td{text-align:right;}
         .table td a{color:#333;}
+        .table thead { position: sticky; top: 0;z-index:100;}
+
+        header.nav{justify-content:flex-end;}
+        header.spread{}
+        header.index{}
     </style>
 </head>
 <body>
+    <style>
+        .table>:not(caption)>* th{padding:0;border:0;}
+        th span{height:41px;display:flex;justify-content:center;align-items:center;width:100%;background:#fff;border-bottom:1px solid #ccc}
+        th.-row span{height:83px}
+    </style>
 <main id="app">
-    <header>
+    <header class="nav">
         <p><a href="/document.html">[용어설명]</a></p>
-        <p><a href="/goat.html">[종목들]</a></p>
+        <p><a href="/index.html">[재무]</a></p>
+        <p><a href="/goat.html">[종목]</a></p>
     </header>
-    <header>
-        <p>기대수익률(BBB+,5Y) :<strong>{{rate.spreadText}}%</strong></p>
-        <p>국고채 3년 :<strong>{{rate.bond3yText}}%</strong></p>
-        <p>기준금리:<strong>2.75%</strong></p>
+    <header class="spread">
+        <p>기대수익률(BBB+,5Y)<br /><strong>{{rate.spreadText}}%</strong></p>
+        <p>국고채 3년<br /><strong>{{rate.bond3yText}}%</strong></p>
+        <p>기준금리<br /><strong>2.75%</strong></p>
     </header>
-    <header>
-        <p>USD :<strong>{{index.usd}}원</strong> <i :class="index.usdClassName">({{index.usdPer}}%)</i></p>
-        <p>WTI :<strong>${{index.wti}}</strong> <i :class="index.wtiClassName">({{index.wtiPer}}%)</i></p>
-        <p>GOLD :<strong>${{index.gold}}</strong> <i :class="index.goldClassName">({{index.goldPer}}%)</i></p>
-        <p>KOR :<strong>${{index.kor}}</strong></p>
+    <header class="index">
+        <p>USD<br /><strong>{{index.usd}}원</strong><br /><i :class="index.usdClassName">({{index.usdPer}}%)</i></p>
+        <p>WTI<br /><strong>${{index.wti}}</strong><br /><i :class="index.wtiClassName">({{index.wtiPer}}%)</i></p>
+        <p>GOLD<br /><strong>${{index.gold}}</strong><br /><i :class="index.goldClassName">({{index.goldPer}}%)</i></p>
+        <p>KOR<br /><strong>${{index.kor}}</strong></p>
     </header>
     <section>
         <table class="table">
             <thead>
                 <tr>
-                    <th rowspan="2" style="width:40%;vertical-align:middle;">종목명</th>
-                    <th>주가</th>
-                    <th>배당</th>
+                    <th rowspan="2" class="-row" style="width:40%;"><span>종목명</span></th>
+                    <th><span>주가</span></th>
+                    <th><span>배당</span></th>
                 </tr>
                 <tr>
-                    <th>ROE</th>
-                    <th>RIM</th>
+                    <th><span>ROE</span></th>
+                    <th><span>RIM</span></th>
                 </tr>
             </thead>
             <tbody>
                 <template v-for="stock,idx in stocks">
-                    <tr v-for="stock,idx in stocks">
+                    <tr>
                         <td rowspan="2"><a :href="'https://m.stock.naver.com/domestic/stock/'+stock.code+'/news/title'" target="_blank">{{stock.name}}</a></td>
                         <td :class="stock.safetyMarginClassName">{{stock.price.toLocaleString()}}</td>
                         <td :class="stock.dividendClassName">{{stock.dividendPer}}%</td>
