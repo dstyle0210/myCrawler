@@ -19,7 +19,7 @@ const {LIST_URL,FIREBASE_DB,TG_TOKEN_DSTYLESTOCK,TG_CHATID_DSTYLESTOCK} = proces
             // console.log(snapshot.val().length);
             snapshot.val().forEach((item) => {
                 const {stockCode,corpName,curVol} = item;
-                dbList[stockCode] = {stockCode,corpName,prevVol:curVol};
+                dbList[stockCode] = {stockCode,corpName,prevVol:+curVol};
             });
         } else {
             console.log("No data available");
@@ -48,8 +48,9 @@ const {LIST_URL,FIREBASE_DB,TG_TOKEN_DSTYLESTOCK,TG_CHATID_DSTYLESTOCK} = proces
         for (const key in dbList) {
             if (dbList.hasOwnProperty(key)) {
                 const {corpName,prevVol,curVol} = dbList[key];
+                const sType = prevVol==0 ? "신규" : (curVol==prevVol) ? "청산" : "변경";
                 if(prevVol !== curVol){
-                    updateList.push(`${corpName}(${curVol - prevVol})`);
+                    updateList.push(`[${sType}] ${corpName}(${curVol - prevVol})`);
                 };
             }
         };
