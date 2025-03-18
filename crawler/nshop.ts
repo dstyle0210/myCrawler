@@ -17,73 +17,15 @@ items.forEach(item => {
         let message = "";
         if (!error && response.statusCode == 200) {
             const data = JSON.parse(body);
-            const { title, lprice, link } = data.items[0];
-            // console.log(title+" "+lprice + "원");
-            message = "[nShop]\n"+title.replace(/<[^>]*>?/g, '')+"\n"+lprice + "원";
+            if(data.items.length === 0){
+                message = `[nShop] ${item} 검색 결과가 없습니다.`;
+            }else{
+                const { title, lprice, link } = data.items[0];
+                message = "[nShop]\n"+title.replace(/<[^>]*>?/g, '')+"\n"+lprice + "원";
+            };
         } else {
-            // console.log('error = ' + response.statusCode);
             message = "[nShop] "+'error = ' + response.statusCode;
         };
         bot.sendMessage(TG_CHATID_MABONGPAPA, message);
     });
 });
-
-/*
-const asyncReqeust = async (item:string):Promise<string> => {
-    return new Promise((resolve, reject) => {
-        request.get({
-            url: `https://openapi.naver.com/v1/search/shop.json?sort=asc&query=${encodeURI(item)}`,
-            headers: { 'X-Naver-Client-Id': client_id, 'X-Naver-Client-Secret': client_secret }
-        }, function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                const data = JSON.parse(body);
-                const { title, lprice, link } = data.items[0];
-                console.log(title+" "+lprice + "원");
-                resolve(title+" "+lprice + "원");
-            } else {
-                reject('error = ' + response.statusCode);
-            };
-        });
-        
-    });
-};
-
-(async function(){
-    await Promise.all( items.map((item)=>asyncReqeust(item)) )
-    .then((results) => {
-        if(!TG_TOKEN_MABONGPAPA || !TG_CHATID_MABONGPAPA){ return; };
-        const bot = new TelegramBot(TG_TOKEN_MABONGPAPA, {polling: false});
-        const message = "[nShop] "+text;
-        bot.sendMessage(TG_CHATID_MABONGPAPA, message);
-
-        console.log(results);
-        return "Asd";
-    });
-})();
-*/
-
-
-
-/*
-items.forEach(item => {
-    request.get({
-        url: `https://openapi.naver.com/v1/search/shop.json?sort=asc&query=${encodeURI(item)}`,
-        headers: { 'X-Naver-Client-Id': client_id, 'X-Naver-Client-Secret': client_secret }
-    }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            const data = JSON.parse(body);
-            const { title, lprice, link } = data.items[0];
-            console.log(title, lprice + "원");
-        } else {
-            console.log('error = ' + response.statusCode);
-        };
-
-        if(!TG_TOKEN_MABONGPAPA || !TG_CHATID_MABONGPAPA){ return; };
-        const bot = new TelegramBot(TG_TOKEN_MABONGPAPA, {polling: false});
-        const message = "[메르] "+text;
-        bot.sendMessage(TG_CHATID_MABONGPAPA, message);
-
-    });
-});
-
-*/
