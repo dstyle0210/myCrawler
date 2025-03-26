@@ -164,7 +164,7 @@ function getDataRIM(stockCode:string):Promise<RIM>{
             };
         });
         
-        // 네이버
+        // 네이버 https://finance.naver.com/item/main.naver?code=023160
         await page.goto("https://finance.naver.com/item/main.naver?code="+stockCode);
         var naverData = await page.evaluate(function(){
             const toNum = (element:HTMLElement) => +element.innerText.replace(/[\n\s\t\,]/gi,"");
@@ -172,7 +172,7 @@ function getDataRIM(stockCode:string):Promise<RIM>{
             const stocks = toNum( document.querySelector("#tab_con1").getElementsByTagName("em")[2] );
 
             // 외인수급확인
-            const foreignerTable = document.getElementsByTagName("table")[2];
+            const foreignerTable = Array.from(document.querySelectorAll(".area_tab_type")).length ? document.getElementsByTagName("table")[3] : document.getElementsByTagName("table")[2];
             const foreignerRows = Array.from(foreignerTable.getElementsByTagName("tr")).slice(2,8);
             let foreignerY = 0;
             const foreigner = foreignerRows.reduce((accValue,current:any) => {
