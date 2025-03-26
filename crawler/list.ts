@@ -5,19 +5,28 @@ import {initializeApp} from "firebase/app";
 import { getDatabase, set, get, ref, goOffline } from "firebase/database";
 dotenv.config();
 
+interface IStock {
+    stockCode?: string;
+    corpName?: string;
+    curVol?: number;
+    prevVol?: number;
+}
+interface IStockWrap {
+    [key:string] : IStock
+}
 const {LIST_URL,FIREBASE_DB,TG_TOKEN_DSTYLESTOCK,TG_CHATID_DSTYLESTOCK} = process.env; // ENV
 (async () => {
     const app = initializeApp({databaseURL: FIREBASE_DB});
     const db = getDatabase(app);
     const nowRef = ref(db, `nowList`);
     const prevRef = ref(db, `prevList`);
-    let dbList = {}; // 통합배열
+    const dbList:IStockWrap = {}; // 통합배열
 
     await get(nowRef).then(async (snapshot) => {
         if (snapshot.exists()) {
             await set(prevRef,snapshot.val());
             // console.log(snapshot.val().length);
-            snapshot.val().forEach((item) => {
+            snapshot.val().forEach((item:IStock) => {
                 const {stockCode,corpName,curVol} = item;
                 dbList[stockCode] = {stockCode,corpName,prevVol:+curVol};
             });
@@ -38,9 +47,9 @@ const {LIST_URL,FIREBASE_DB,TG_TOKEN_DSTYLESTOCK,TG_CHATID_DSTYLESTOCK} = proces
         data.stockTable.forEach((item) => {
             const {stockCode,corpName,curVol} = item;
             if(dbList[stockCode]){
-                dbList[stockCode].curVol = curVol;
+                dbList[stockCode].curVol = +curVol;
             }else{
-                dbList[stockCode] = {stockCode,corpName,curVol,prevVol:0};
+                dbList[stockCode] = {stockCode,corpName,curVol:+curVol,prevVol:0};
             };
         });
 
