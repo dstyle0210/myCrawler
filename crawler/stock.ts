@@ -1,67 +1,45 @@
-import fs from "fs";
+import dotenv from 'dotenv';
 import {chromium} from "playwright";
+import type {Page} from "playwright";
 import TelegramBot from "node-telegram-bot-api";
-const {initializeApp} = require('firebase/app');
-const { getDatabase , set , ref ,onValue, goOffline } = require('firebase/database');
+import {initializeApp} from "firebase/app";
+import { getDatabase, set, get, ref, goOffline } from "firebase/database";
+import getMARKETs from './functions/getMARKETs';
+import getSPREADs from './functions/getSPREADs';
+dotenv.config();
 const {TG_TOKEN_MABONGPAPA,TG_CHATID_MABONGPAPA,FIREBASE_DB} = process.env; // ENV
-
 const RIMs = [];
-let page = null;
+let page:Page = null;
 let MARKETs = {};
 let SPREADs = {spread:0};
-(async () => {
 
+(async () => {
     // playwright browser open
     const browser = await chromium.launch({headless:true});
     page = await browser.newPage();
-
-    // 시장지표 구해오기
-    await page.goto("https://finance.naver.com/marketindex/");
-    MARKETs = await page.evaluate(()=>{
-        const once = 31.1034768;
-        const toNum = (selector,idx=0) => {
-            const element = document.querySelectorAll(selector)[idx];
-            return +element.innerText.replace(/[\n\s\t\,]/gi,"");
-        };
-        const isMinus = (selector,idx=0) => {
-            const element = document.querySelectorAll(selector)[idx];
-            return element.classList.contains("point_dn");
-        }
-        const result = {
-            usd:toNum("#exchangeList .value"), usdchange:toNum("#exchangeList .change"), // 달러
-            wti:toNum("#oilGoldList .value"), wtichange:toNum("#oilGoldList .change"), // WTI
-            gold:toNum("#oilGoldList .value",2), goldchange:toNum("#oilGoldList .change",2), // 금
-            kor:0
-        };
-        result.usdchange = isMinus("#exchangeList .head_info") ? -result.usdchange : result.usdchange;
-        result.wtichange = isMinus("#oilGoldList .head_info") ? -result.wtichange : result.wtichange;
-        result.goldchange = isMinus("#oilGoldList .head_info",2) ? -result.goldchange : result.goldchange;
-        result.kor = Number( (result.usd * (result.gold / once)).toFixed(0) );
-        return result;
-    });
-
-    // 기대수익률 구해오기
-    await page.goto("https://www.kisrating.com/ratingsStatistics/statics_spread.do");
-    SPREADs = await page.evaluate(()=>{
-        const yyyymmdd = function(date) {
-            let set = (num) => (num<10) ? "0"+num : ""+num;
-            return `${date.getFullYear()}-${set(date.getMonth()+1)}-${set(date.getDate())} ${date.getHours()}:${date.getMinutes()}`;
-        };
-        const toNum = (element) => +element.innerText.replace(/[\n\s\t\,]/gi,"");
-        const result = {
-            spread:+((toNum( $(".table_ty1 table:eq(0) tr:last td:last").get(0) )/100).toFixed(4)), // 계산을 위해 소수점으로 표시
-            bondSpread3Y:toNum( $(".table_ty1 table:eq(0) tr:eq(1) td:eq(7)").get(0) ), // 표시만 있어서 그대로 받음.
-            date:yyyymmdd( new Date() )
-        };
-        return result;
-    });
-
     
-    
-    // Firebase connect
+    MARKETs = await getMARKETs(page);
+    SPREADs = await getSPREADs(page);
+
     const app = initializeApp({databaseURL: FIREBASE_DB});
     const db = getDatabase(app);
 
+    // 현재 리스트
+    const nowRef = ref(db, `nowList`);
+    const stockList = [];
+    await get(nowRef).then(async (snapshot) => {
+        if (snapshot.exists()) {
+            snapshot.val().forEach((item) => {
+                (/[0-9]{6}/).test(item.stockCode) && stockList.push(item.stockCode);
+            });
+        } else {
+            console.log("No data available");
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
+    console.log(stockList);
+    
     // 시장지표 등록
     const indexRef = ref(db, `dailyIndex`);
     await set(indexRef,null);
@@ -74,24 +52,27 @@ let SPREADs = {spread:0};
 
     // 주식정보 등록
     await set( ref(db, `dailyStock`) ,null);
-    const codeListRaw = fs.readFileSync("./stocksCodeList.txt");
-    const codeList = codeListRaw.toString().split("\n").map((code)=>code.replace("\r","")).filter(code => code);
     let count = 1;
-    for await(let code of codeList){
+    for await(let code of stockList){
         const stockData = await getDataRIM(code);
-        console.log(`[${count++} / ${codeList.length}] ${stockData.name} : ${stockData.price}`);
-        const dbRef = ref(db, `dailyStock/${stockData.code}`);
-        await set(dbRef, stockData);
+        console.log(`[${count++} / ${stockList.length}] ${stockData.name} : ${stockData.price}`);
+        if(stockData.roe!=0){
+            const dbRef = ref(db, `dailyStock/${stockData.code}`);
+            await set(dbRef, stockData);
+        }
     };
-    goOffline(db);
 
     // 텔레그램봇 시작
     const bot = new TelegramBot(TG_TOKEN_MABONGPAPA, {polling: false});
     bot.sendMessage(TG_CHATID_MABONGPAPA, `[STOCK] 파일생성 완료\nhttps://dstyle-stocks.web.app`);
-    
+
+    // Firebase unconnect
+    goOffline(db);
+
     // playwright 종료
     await browser.close();
 })();
+
 
 interface RIM {
     code: string,
@@ -185,14 +166,20 @@ function getDataRIM(stockCode:string):Promise<RIM>{
         
         // 현재 지배주주 ROE 구하기
         const spread = SPREADs.spread;
-        var data = Object.assign({
+        var data:any = Object.assign({
             code:stockCode, // 종목코드 저장
         },naverData,reportData);
 
-        data.profit = reportData.profit - (naverData.stocks*reportData.dividend), // 순이익(배당금을 뺀)
-        data.roe = +((data.profit/data.equity).toFixed(4));
-        data.rim = +((data.roe - spread)/spread).toFixed(4); // RIM 구하기
-        data.cap = Math.floor( data.equity + (data.equity*data.rim) ); // 적정주가
+        data.profit = reportData.profit - (naverData.stocks*reportData.dividend); // 순이익(배당금을 뺀)
+        if(data.profit){
+            data.roe = +((data.profit/data.equity).toFixed(4));
+            data.rim = +((data.roe - spread)/spread).toFixed(4); // RIM 구하기
+            data.cap = Math.floor( data.equity + (data.equity*data.rim) ); // 적정주가
+        }else{
+            data.roe = 0;
+            data.rim = 0;
+            data.cap = 0;
+        };
 
         // console.log(data);
         RIMs.push(data);
