@@ -10,7 +10,7 @@ function getSPREADs(page:Page):Promise<SPREADs>{
         await page.goto("https://www.kisrating.com/ratingsStatistics/statics_spread.do");
         const SPREADs = await page.evaluate(()=>{
             const yyyymmdd = function(date) {
-                let set = (num) => (num<10) ? "0"+num : ""+num;
+                let set = (num:number) => (num<10) ? "0"+num : ""+num;
                 return `${date.getFullYear()}-${set(date.getMonth()+1)}-${set(date.getDate())} ${date.getHours()}:${date.getMinutes()}`;
             };
             const toNum = (element) => +element.innerText.replace(/[\n\s\t\,]/gi,"");
