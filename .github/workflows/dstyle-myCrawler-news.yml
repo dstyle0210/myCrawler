@@ -3,8 +3,8 @@ name: dstyle-myCrawler-news
 on:
   schedule:
     - cron : '30 3 * * 1-5'
-  #push:
-    #branches: [ "main" ]
+  push:
+    branches: [ "main" ]
   #pull_request:
     #branches: [ "main" ]
 

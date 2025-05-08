@@ -24,11 +24,13 @@ const {TG_TOKEN_MABONGPAPA,TG_CHATID_MABONGPAPA} = process.env; // ENV
         return news.eq(0).attr("href");
     });
 
+    /*
     await page.goto("https://www.bloomberg.co.kr/blog/");
     await new Promise((res) => setTimeout(res,1000));
     const bloombergNews = await page.evaluate(() => {
         return jQuery(".h3-regular-8 a").eq(0).attr("href");
     });
+    */
 
     await page.goto("https://blog.naver.com/PostList.naver?blogId=ranto28");
     await new Promise((res) => setTimeout(res,1000));
@@ -66,7 +68,8 @@ const {TG_TOKEN_MABONGPAPA,TG_CHATID_MABONGPAPA} = process.env; // ENV
     const bot = new TelegramBot(TG_TOKEN_MABONGPAPA, {polling: false});
 
      // 텔레그램 발송
-     const cardList = [hankyungNews,mkNews,bloombergNews , ...mer];
+     // const cardList = [hankyungNews,mkNews,bloombergNews , ...mer];
+     const cardList = [hankyungNews,mkNews, ...mer];
      for(let card of cardList){
         bot.sendMessage(TG_CHATID_MABONGPAPA, "[NEWS] "+card);
     };
