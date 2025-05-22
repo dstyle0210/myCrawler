@@ -5,12 +5,13 @@ import TelegramBot from "node-telegram-bot-api";
 import {initializeApp} from "firebase/app";
 import { getDatabase, set, get, ref, goOffline } from "firebase/database";
 import getMARKETs from './functions/getMARKETs';
+import {type T_MARKETs} from './functions/getMARKETs';
 import getSPREADs from './functions/getSPREADs';
 dotenv.config();
 const {TG_TOKEN_MABONGPAPA,TG_CHATID_MABONGPAPA,FIREBASE_DB} = process.env; // ENV
 const RIMs = [];
 let page:Page = null;
-let MARKETs = {};
+let MARKETs:T_MARKETs = {};
 let SPREADs = {spread:0};
 
 (async () => {
@@ -64,7 +65,14 @@ let SPREADs = {spread:0};
 
     // 텔레그램봇 시작
     const bot = new TelegramBot(TG_TOKEN_MABONGPAPA, {polling: false});
-    bot.sendMessage(TG_CHATID_MABONGPAPA, `[STOCK] 파일생성 완료\nhttps://dstyle-stocks.web.app`);
+    const sendMessage = `
+        [STOCK]\n 
+        달러:${MARKETs.usd}(${MARKETs.usdchange})\n
+        유가:$${MARKETs.wti}(${MARKETs.wtichange})\n
+        골드:$${MARKETs.gold}(${MARKETs.goldchange}, ${MARKETs.kor}원)\n
+        https://dstyle-stocks.web.app
+    `;
+    bot.sendMessage(TG_CHATID_MABONGPAPA, sendMessage);
 
     // Firebase unconnect
     goOffline(db);

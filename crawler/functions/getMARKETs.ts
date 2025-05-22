@@ -1,15 +1,15 @@
 import type {Page} from "playwright";
-interface MARKETs {
-    usd: number; // 달러환율
-    usdchange: number; // 달러환율 변화량
-    wti: number; // WTI
-    wtichange: number; // WTI 변화량
-    gold: number; // 금
-    goldchange: number; // 금 변화량
-    kor: number; // 원화환율
+export interface T_MARKETs {
+    usd?: number; // 달러환율
+    usdchange?: number; // 달러환율 변화량
+    wti?: number; // WTI
+    wtichange?: number; // WTI 변화량
+    gold?: number; // 금
+    goldchange?: number; // 금 변화량
+    kor?: number; // 원화환율
 };
 // 시장지표 구해오기
-function getMARKETs(page:Page):Promise<MARKETs>{
+function getMARKETs(page:Page):Promise<T_MARKETs>{
     return new Promise(async (resolve, reject) => {
         await page.goto("https://finance.naver.com/marketindex/");
         const MARKETs = await page.evaluate(()=>{
