@@ -1,3 +1,4 @@
+import { promises as fs } from 'fs';
 import dotenv from 'dotenv';
 import {chromium} from "playwright";
 import type {Page} from "playwright";
@@ -26,8 +27,12 @@ let SPREADs = {spread:0};
     const db = getDatabase(app);
 
     // 현재 리스트
-    const nowRef = ref(db, `nowList`);
+    // const nowRef = ref(db, `nowList`);
     const stockList = [];
+    const stockListData = await fs.readFile('stocks.txt', 'utf-8');
+    const stockListLines = stockListData.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+    stockList.push(...stockListLines);
+    /*
     await get(nowRef).then(async (snapshot) => {
         if (snapshot.exists()) {
             snapshot.val().forEach((item) => {
@@ -40,6 +45,7 @@ let SPREADs = {spread:0};
         console.error(error);
     });
     console.log(stockList);
+    */
     
     // 시장지표 등록
     const indexRef = ref(db, `dailyIndex`);
