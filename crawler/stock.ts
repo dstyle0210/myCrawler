@@ -72,10 +72,10 @@ let SPREADs = {spread:0};
     // 텔레그램봇 시작
     const bot = new TelegramBot(TG_TOKEN_MABONGPAPA, {polling: false});
     const sendMessage = `
-        [STOCK]\n 
-        달러:${MARKETs.usd}(${MARKETs.usdchange})\n
-        유가:$${MARKETs.wti}(${MARKETs.wtichange})\n
-        골드:$${MARKETs.gold}(${MARKETs.goldchange}, ${MARKETs.kor}원)\n
+        [STOCK]
+        달러:${MARKETs.usd}(${MARKETs.usdchange})
+        유가:$${MARKETs.wti}(${MARKETs.wtichange})
+        골드:$${MARKETs.gold}(${MARKETs.goldchange}, ${MARKETs.kor}원)
         https://dstyle-stocks.web.app
     `;
     bot.sendMessage(TG_CHATID_MABONGPAPA, sendMessage);
