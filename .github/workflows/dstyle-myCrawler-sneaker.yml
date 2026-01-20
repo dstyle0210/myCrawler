@@ -3,6 +3,7 @@ name: dstyle-myCrawler-sneaker
 on:
   schedule:
     - cron : '0 23 * * *'
+  workflow_dispatch:
   #push:
   #  branches: [ "main" ]
   #pull_request:
