@@ -8,7 +8,7 @@ if (!NAVER_CLIENT_ID || !NAVER_CLIENT_SECRET) {
     dotenv.config();
 };
 const bot = new TelegramBot(TG_TOKEN_MABONGPAPA, {polling: false});
-const items = ['OUW23234', 'DXPD33041'];
+const items = ['아디다스 KS2229', '아디다스 KS2231'];
 items.forEach(item => {
     request.get({
         url: `https://openapi.naver.com/v1/search/shop.json?sort=asc&query=${encodeURI(item)}`,

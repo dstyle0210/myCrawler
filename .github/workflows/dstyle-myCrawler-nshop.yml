@@ -2,9 +2,9 @@ name: dstyle-myCrawler-nshop
 
 on:
   schedule:
-    - cron : '0 0 * * *'
-  #push:
-    #branches: [ "main" ]
+    - cron : '30 23 * * *'
+  push:
+    branches: [ "main" ]
   #pull_request:
     #branches: [ "main" ]
 
