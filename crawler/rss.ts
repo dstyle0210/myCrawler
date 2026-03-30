@@ -14,7 +14,7 @@ const parser = new Parser({
 
 const today = new Date(); // 1. 현재 날짜 객체 생성
 const yesterday = new Date(today);
-yesterday.setDate(today.getDate() - 5); // 2. 현재 날짜에서 1일을 뺌
+yesterday.setDate(today.getDate() - 1); // 2. 현재 날짜에서 1일을 뺌
 const yesterdayDate = yesterday.toDateString();
 let feedList = [];
 function analyzeRssFeed(url: string):Promise<void>{
@@ -49,8 +49,8 @@ function analyzeRssFeed(url: string):Promise<void>{
 
 const FEEDS2 = ["https://spoqa.github.io/atom.xml",];
 const FEEDS = [
+    "https://d2.naver.com/d2.atom",
     "https://ridicorp.com/story-category/tech-blog/feed/",  // Tech Blog Archives - 리디주식회사 RIDI Corporation
-    "https://tech.socarcorp.kr/feed.xml", // SOCAR Tech Blog
     "https://techblog.lycorp.co.jp/ko/feed/index.xml",  // LY Corporation Tech Blog
     "https://spoqa.github.io/atom.xml",   // Spoqa tech blog
     "https://techblog.yogiyo.co.kr/feed", // YOGIYO Tech Blog - 요기요 기술블로그 - Medium
@@ -58,48 +58,49 @@ const FEEDS = [
     "https://blog.banksalad.com/rss.xml", // Banksalad RSS Feed (뱅크샐러드)
     "https://blog.kmong.com/feed",        // 크몽
     "https://tech.kakaoent.com/rss.xml",  // 카카오 테크
-    "https://medium.com/feed/daangn",
-    "https://medium.com/feed/29cm",
-    "https://d2.naver.com/d2.atom",
+    "https://tech.socarcorp.kr/feed.xml", // SOCAR Tech Blog
     "https://tech.kakaoenterprise.com/feed/",
     "https://tech.kakao.com/feed/",
     "https://tech.kakaobank.com/index.xml",
     "https://tech.kakaopay.com/rss",
+    "https://tech.devsisters.com/rss.xml",
     "https://medium.com/feed/coupang-tech",
     "https://medium.com/feed/@nol.tech",
-    "https://dev.gmarket.com/rss",
+    "https://medium.com/feed/daangn",
+    "https://medium.com/feed/29cm",
     "https://medium.com/feed/deliverytechkorea",
     "https://medium.com/feed/zigbang",
-    "https://tech.devsisters.com/rss.xml",
-    "https://helloworld.kurly.com/feed.xml",
     "https://medium.com/feed/watcha",
-    "https://techblog.lycorp.co.jp/ko/feed/index.xml",
-    "https://ridicorp.com/story-category/tech-blog/feed/",
+    "https://dev.gmarket.com/rss",
+    "https://helloworld.kurly.com/feed.xml",
     "https://oliveyoung.tech/rss.xml",
     "https://gsretail.tistory.com/xml",
 ];
 
 (async () => {
+    // 텔레그램 발송
+    if(!TG_TOKEN_MABONGPAPA || !TG_CHATID_MABONGPAPA){ return; };
+    const bot = new TelegramBot(TG_TOKEN_MABONGPAPA, {polling: false});
   try {
     let count = 0;
     for(const rss of FEEDS){
         count++;
         console.log(count+"/"+FEEDS.length);
         await analyzeRssFeed(rss);
-        // if(count==2) break;
     }
-    console.log(feedList);
 
-    // 텔레그램 발송
-    if(!TG_TOKEN_MABONGPAPA || !TG_CHATID_MABONGPAPA){ return; };
-    const bot = new TelegramBot(TG_TOKEN_MABONGPAPA, {polling: false});
-    for(let card of feedList){
-        const message = "[SNKRS] "+card.name+"\n"+card.link;
-        bot.sendMessage(TG_CHATID_MABONGPAPA, message);
-        console.log(message);
-    };
+    if(feedList.length){
+        for(let card of feedList){
+            const message = "[RSS] "+card.link;
+            bot.sendMessage(TG_CHATID_MABONGPAPA, message);
+            console.log(message);
+        };
+    }else{
+        bot.sendMessage(TG_CHATID_MABONGPAPA, `[RSS] 신규피드 없음`);
+    }
 
   } catch (error) {
     console.error("에러 발생!", error);
+    bot.sendMessage(TG_CHATID_MABONGPAPA, `[RSS] 에러 발생!`);
   }
 })();
