@@ -12,6 +12,7 @@
         "ts-list": "ts-node ./crawler/list.ts",
         "ts-nshop": "ts-node ./crawler/nshop.ts",
         "ts-stock": "ts-node ./crawler/stock.ts",
+        "ts-rss": "ts-node ./crawler/rss.ts",
         "dev": "ts-node ./crawler/dev.ts"
     },
     "keywords": [],
