@@ -8,10 +8,10 @@ if (!NAVER_CLIENT_ID || !NAVER_CLIENT_SECRET) {
     dotenv.config();
 };
 const bot = new TelegramBot(TG_TOKEN_MABONGPAPA, {polling: false});
-const items = ['아디다스 KS2229', '아디다스 KS2231'];
+const items = ['아디다스 KS2229', '아디다스 KS2231','아디다스 JQ6637'];
 items.forEach(item => {
     request.get({
-        url: `https://openapi.naver.com/v1/search/shop.json?sort=asc&query=${encodeURI(item)}`,
+        url: `https://openapi.naver.com/v1/search/shop.json?sort=asc&query=${encodeURI(item)}&exclude=used:rental:cshop`,
         headers: { 'X-Naver-Client-Id': process.env.NAVER_CLIENT_ID, 'X-Naver-Client-Secret': process.env.NAVER_CLIENT_SECRET }
     }, function (error, response, body) {
         let message = "";
@@ -21,7 +21,7 @@ items.forEach(item => {
                 message = `[nShop] ${item} 검색 결과가 없습니다.`;
             }else{
                 const { title, lprice, link } = data.items[0];
-                message = "[nShop]\n"+title.replace(/<[^>]*>?/g, '')+"\n"+lprice + "원";
+                message = "[nShop]\n"+title.replace(/<[^>]*>?/g, '')+"\n"+lprice + "원\n"+link;
             };
         } else {
             message = "[nShop] "+'error = ' + response.statusCode;
